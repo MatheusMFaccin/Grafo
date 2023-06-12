@@ -1,3 +1,6 @@
+from pyvis import Network
+import networkx as nx
+
 class Vertice:
     def __init__(self,index):
         self.index = index
@@ -29,9 +32,24 @@ for linha in range(len(linhas)):
         for aresta in arestas:
             if aresta:
                 valores = aresta.split(',')
-                print(valores)
-                Arestas.append(Aresta(valores[0],valores[1],valores[2],valores[3]))
+                if valores:
+                    verticeInicial = valores[0]
+                    verticeFinal = valores[1]
+                    custo = valores[2]
+                    carga = valores[3]
+                    if any(vertice.index == verticeFinal for vertice in Vertices) and any(vertice.index==verticeInicial for vertice in Vertices): 
+                        Arestas.append(Aresta(verticeInicial,verticeFinal,custo,carga))
+net = Network()
 
 for aresta in Arestas:
     print(aresta.inicial,aresta.fim,aresta.custo,aresta.carga)
+    net.add_edge(aresta.inicial,aresta.fim, custo = aresta.custo, carga = aresta.carga)
+
+custos = nx.get_edge_attributes(net, 'custo')
+cargas = nx.get_edge_attributes(net, 'carga')
+    
+    
+
+
+
         
