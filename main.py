@@ -15,7 +15,25 @@ class Aresta:
 class Grafo:
     def __init__(self, arestas):
         self.arestas = arestas
-
+def temInicio(arestas,aresta):
+    for a in arestas:
+        if aresta.fim == a.inicial:
+            print("a:",a)
+            print(resultado)
+            return a,resultado
+        else:
+            return None,None
+def calculaRota(arestas):
+    resultado = 0
+    for aresta in arestas:
+        a, eficiencia = temInicio(arestas,aresta)
+        if a:
+            temInicio(arestas,a)
+            resultado+=eficiencia
+        else:
+            print("nada")
+    return resultado
+    
 net = Network(notebook=True,directed=True,height='500px', width='100%')
 nxgraph = nx.cycle_graph(10)
 f = open("arquivo.txt", "r")
@@ -69,7 +87,7 @@ for aresta in arestasOrdenadas:
 for aresta in arestasOrdenadas:    
     print(aresta.inicial,aresta.fim,aresta.custo,aresta.carga, aresta.eficiencia)
 
-
+print(calculaRota(arestasOrdenadas))
 net.show('index.html')
     
     
