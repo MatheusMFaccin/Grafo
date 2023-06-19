@@ -6,33 +6,39 @@ class Vertice:
         self.index = index
 
 class Aresta:
+    index=0
     def __init__(self,inicial,fim,custo,carga,eficiencia):
+        self.index = Aresta.index
         self.inicial = inicial
         self.fim = fim
         self.custo = custo
         self.carga = carga
         self.eficiencia = eficiencia
+        Aresta.index+=1
+
 class Grafo:
     def __init__(self, arestas):
         self.arestas = arestas
-def temInicio(arestas,aresta):
+def verticeTemInicio(arestas,aresta,resultado,rotas):
+    if aresta.index not in rotas:
+        rotas[aresta.index] = aresta    
     for a in arestas:
         if aresta.fim == a.inicial:
-            print("a:",a)
-            print(resultado)
-            return a,resultado
-        else:
-            return None,None
+            if a.index not in rotas:
+                rotas[a.index] = a    
+                resultado += a.eficiencia
+                print(a.inicial,a.fim,a.custo,a.carga, a.eficiencia)
+                verticeTemInicio(arestas,a,resultado,rotas)
+    return rotas
+    print(resultado)       
 def calculaRota(arestas):
-    resultado = 0
+    
+    listaRotas = []
     for aresta in arestas:
-        a, eficiencia = temInicio(arestas,aresta)
-        if a:
-            temInicio(arestas,a)
-            resultado+=eficiencia
-        else:
-            print("nada")
-    return resultado
+        rotas = {}
+        listaRotas.append(verticeTemInicio(arestas,aresta,resultado,rotas))
+    
+    return listaRotas
     
 net = Network(notebook=True,directed=True,height='500px', width='100%')
 nxgraph = nx.cycle_graph(10)
@@ -42,16 +48,18 @@ linhas = Arquivo.split("\n")
 Vertices = []
 Arestas = []
 eficiencias = []
+mapa = []
+index = 0 
 for linha in range(len(linhas)):
     if linha == 0:
-        vertices = linhas[0].split(',')
-        for vertice in vertices:
+        linhaVertices = linhas[0].split(',')
+        for vertice in linhaVertices:
             Vertices.append(Vertice(int(vertice)))
             
     else:
-        arestas = linhas[linha].split(';')
-        print(arestas)
-        for aresta in arestas:
+        linhaArestas = linhas[linha].split(';')
+        print(linhaArestas)
+        for aresta in linhaArestas:
             if aresta:
                 valores = aresta.split(',')
                 if valores:
@@ -60,6 +68,7 @@ for linha in range(len(linhas)):
                     custo = float(valores[2])
                     carga = float(valores[3])
                     eficiencia = carga/custo
+                    #verifica se os vertices estao adicionados na lista de vertice se eles estiverem ele vai adicionar a aresta na lista arestas 
                     if any(vertice.index == verticeFinal for vertice in Vertices) and any(vertice.index==verticeInicial for vertice in Vertices): 
                         Arestas.append(Aresta(verticeInicial,verticeFinal,custo,carga,eficiencia))
 
@@ -87,7 +96,13 @@ for aresta in arestasOrdenadas:
 for aresta in arestasOrdenadas:    
     print(aresta.inicial,aresta.fim,aresta.custo,aresta.carga, aresta.eficiencia)
 
-print(calculaRota(arestasOrdenadas))
+mapa = calculaRota(Arestas)
+
+for rotas in mapa:
+    print("rota:")
+    for chave, aresta in rotas.items():        
+        print(aresta.inicial,aresta.fim,aresta.custo,aresta.carga, aresta.eficiencia)
+
 net.show('index.html')
     
     
