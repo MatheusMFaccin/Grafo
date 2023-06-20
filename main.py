@@ -20,16 +20,27 @@ class Grafo:
     def __init__(self, arestas):
         self.arestas = arestas
 def verticeTemInicio(arestas,aresta,resultado,rotas):
+    contador = 0
     if aresta.index not in rotas:
         rotas[aresta.index] = aresta    
     for a in arestas:
         if aresta.fim == a.inicial:
+            temInicio = True
             if a.index not in rotas:
                 rotas[a.index] = a    
                 resultado += a.eficiencia
                 print(a.inicial,a.fim,a.custo,a.carga, a.eficiencia)
                 verticeTemInicio(arestas,a,resultado,rotas)
+        
+        elif contador == len(arestas):
+            return rotas
+        else:
+            continue
+        contador+=1
+        print(contador)
     return rotas
+
+    
     print(resultado)       
 def calculaRota(arestas):
     
