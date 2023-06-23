@@ -19,38 +19,8 @@ class Aresta:
 class Grafo:
     def __init__(self, arestas):
         self.arestas = arestas
-def verticeTemInicio(arestas,aresta,resultado,rotas):
-    contador = 0
-    if aresta.index not in rotas:
-        rotas[aresta.index] = aresta    
-    for a in arestas:
-        if aresta.fim == a.inicial:
-            temInicio = True
-            if a.index not in rotas:
-                rotas[a.index] = a    
-                resultado += a.eficiencia
-                print(a.inicial,a.fim,a.custo,a.carga, a.eficiencia)
-                verticeTemInicio(arestas,a,resultado,rotas)
-        
-        elif contador == len(arestas):
-            return rotas
-        else:
-            continue
-        contador+=1
-        print(contador)
-    return rotas
 
-    
-    print(resultado)       
-def calculaRota(arestas):
-    
-    listaRotas = []
-    for aresta in arestas:
-        rotas = {}
-        listaRotas.append(verticeTemInicio(arestas,aresta,resultado,rotas))
-    
-    return listaRotas
-    
+
 net = Network(notebook=True,directed=True,height='500px', width='100%')
 nxgraph = nx.cycle_graph(10)
 f = open("arquivo.txt", "r")
@@ -85,7 +55,7 @@ for linha in range(len(linhas)):
 
 
 for vertice in Vertices:
-    print(vertice.index)
+   
    
     net.add_node(int(vertice.index), label="vertice "+str(vertice.index),shape="circle",color="#fa8072")
 arestasOrdenadas = sorted(Arestas, key=lambda  obj: -obj.eficiencia)
@@ -104,15 +74,11 @@ for aresta in arestasOrdenadas:
     i+=1
 
 
-for aresta in arestasOrdenadas:    
+for aresta in arestasOrdenadas:
+    print("aresta mais eficiente para a menos eficiente")    
     print(aresta.inicial,aresta.fim,aresta.custo,aresta.carga, aresta.eficiencia)
 
-mapa = calculaRota(Arestas)
 
-for rotas in mapa:
-    print("rota:")
-    for chave, aresta in rotas.items():        
-        print(aresta.inicial,aresta.fim,aresta.custo,aresta.carga, aresta.eficiencia)
 
 net.show('index.html')
     
